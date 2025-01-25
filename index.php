@@ -1,0 +1,1 @@
+<?php header("Location: http://courier.yard360.co.in/public"); ?>

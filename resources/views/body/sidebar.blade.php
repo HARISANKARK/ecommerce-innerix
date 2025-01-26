@@ -36,14 +36,49 @@
                with font-awesome or any other icon font library -->
 
                <li class="nav-item">
-                    <a href="{{url('/home')}}" class="nav-link">
+                    <a href="{{url('/home')}}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">
                     <i class="nav-icon fa fa-tachometer"></i>
                       <p>
                         Dashboard
                       </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                @canany(['view', 'create'])
+                @can('categories')
+                <li class="nav-item {{ Request::is('categories*') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                      <p>
+                        Categories
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('create')
+                        <li class="nav-item">
+                            <a href="{{route('categories.create')}}" class="nav-link {{ Request::is('categories/create') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                Add
+                            </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('view')
+                        <li class="nav-item">
+                            <a href="{{route('categories.index')}}" class="nav-link {{ Request::is('categories') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                View
+                            </p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcan
+                @can('products')
+                <li class="nav-item {{ Request::is('products*') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-book"></i>
                       <p>
@@ -52,24 +87,30 @@
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
-                     {{-- <li class="nav-item">
-                        <a href="" class="nav-link">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>
-                            Add
-                          </p>
-                        </a>
-                      </li> --}}
-                      <li class="nav-item">
-                        <a href="" class="nav-link">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>
-                            View
-                          </p>
-                        </a>
-                      </li>
+                        @can('create')
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ Request::is('products/create') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                Add
+                            </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('view')
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ Request::is('products') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                View
+                            </p>
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcan
+                @endcanany
 
                <!-- <li class="nav-item">
                 <a href="#" class="nav-link">

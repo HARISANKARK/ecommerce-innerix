@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +34,7 @@ Route::resource('/roles', App\Http\Controllers\RoleController::class)->except('d
 Route::resource('/users', App\Http\Controllers\UserController::class)->except('destroy');
 Route::get('/users/destroy/{id}', [App\Http\Controllers\UserController::class,'destroy'])->name('users.destroy');
 
- 
+Route::group(['middleware'=>['permission:categories']],function(){
+    Route::get('/categories/destroy/{id}', [CategoryController::class,'destroy'])->name('categories.destroy');
+    Route::resource('categories',CategoryController::class)->except('destroy');
+});

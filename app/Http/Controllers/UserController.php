@@ -56,7 +56,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        
+
 
     }
 
@@ -86,7 +86,9 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password ?? Hash::make(($request->password));
+        if($request->password){
+            $user->password =  Hash::make(($request->password));
+        }
         $user->save();
         $user->syncRoles($request->roles);
 

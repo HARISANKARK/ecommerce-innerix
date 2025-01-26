@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('p_qty');
             $table->double('p_rate');
             $table->text('p_image_path');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

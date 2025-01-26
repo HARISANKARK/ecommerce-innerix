@@ -75,15 +75,6 @@
     <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
   </div> -->
 
-            <!--to set Navabar color corresponding to yards-->
-            <?php
-        $user = Auth::user();
-        $value = "";
-        $roleColors = [
-            'yard1' =>
-            'bg-primary', 'yard2' => 'bg-teal', 'yard3' => 'bg-purple', 'yard4' => 'bg-pink', 'super-admin' => '' ]; foreach ($roleColors as $role => $color) { if ($user->hasRole($role)) { $value = $color; break; // Stop at the first match
-            } } ?>
-            <!-- Navabar color -->
 
             <!-- Navbar -->
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">

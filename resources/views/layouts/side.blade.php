@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
         <title>{{env('APP_NAME')}}</title>
-
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
         <!-- Font Awesome -->

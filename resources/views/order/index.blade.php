@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Products</h1>
+                        <h1>Orders</h1>
                     </div>
                 </div>
             </div>
@@ -23,11 +23,28 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-2">
+                                        <label for="exampleInputEmail1">From</label>
+                                        <input type="date" class="form-control" name="from"  value="{{date('Y-m-d')}}" required>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="exampleInputEmail1">To</label>
+                                        <input type="date" class="form-control" name="to"  value="{{date('Y-m-d')}}" required>
+                                    </div>
+                                    <div class="form-group col-md-2">
                                         <label for="exampleInputEmail1">Category</label>
                                         <select  class="form-control select2bs4" name="category_id">
                                             <option value="" hidden></option>
                                             @foreach($categories as $category)
                                                 <option value="{{$category->c_id}}">{{$category->c_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="exampleInputEmail1">Product</label>
+                                        <select  class="form-control select2bs4" name="product_id">
+                                            <option value="" hidden></option>
+                                            @foreach($products as $product)
+                                                <option value="{{$product->p_id}}">{{$product->p_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -38,17 +55,21 @@
                             </div>
                         </form>
                         <table id="example1" class="table table-bordered table-striped">
+                            <caption style="caption-side:top"><b>Details from the period of {{formatDate($from)}} to {{ formatDate($to)}}</b></caption>
                             <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Product</th>
                                 <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Previous Price</th>
-                                <th>Discount %</th>
                                 <th>Image</th>
-                                <th>Description</th>
-                                <th>#</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Contact No</th>
+                                <th>Lan Mark</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Amount</th>
                                 <th>#</th>
                             </tr>
                             </thead>
@@ -56,32 +77,28 @@
                                 @php
                                     $i=1;
                                 @endphp
-                                @foreach ($products as $product)
+                                @foreach ($orders as $order)
                                     <tr>
                                         <td>{{$i++}}</td>
-                                        <td>{{$product->p_name}}</td>
-                                        <td>{{$product->c_name}}</td>
-                                        <td>{{$product->p_qty}}</td>
-                                        <td>{{$product->p_previous_price}}</td>
-                                        <td>{{$product->p_price}}</td>
+                                        <td>{{formatDate($order->date)}}</td>
+                                        <td>{{$order->p_name}}</td>
+                                        <td>{{$order->c_name}}</td>
                                         <td>
-                                            <img src="{{ asset($product->p_image_path) }}" alt="user-avatar" class="img-circle img-fluid" width="50px" height="30px">
+                                            <img src="{{ asset($order->p_image_path) }}" alt="user-avatar" class="img-circle img-fluid" width="50px" height="30px">
                                         </td>
-                                        <td>{{$product->p_description}}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm bg-teal">
-                                                <i class="fas fa-cart-plus"></i>
-                                            </a>
-                                            <a href="{{route('orders.create',$product->p_id)}}" class="btn btn-sm btn-primary">
-                                                BuyNow
-                                            </a>
-                                        </td>
+                                        <td>{{$order->name}}</td>
+                                        <td>{{$order->address}}</td>
+                                        <td>{{$order->contact_no}}</td>
+                                        <td>{{$order->lan_mark}}</td>
+                                        <td>{{$order->qty}}</td>
+                                        <td>{{$order->price}}</td>
+                                        <td>{{$order->amount}}</td>
                                         <td>
                                             @can('edit')
-                                                <a href="{{route('products.edit',$product->p_id)}}" class="btn"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{route('orders.edit',$order->o_id)}}" class="btn"><i class="fa fa-pencil"></i></a>
                                             @endcan
                                             @can('delete')
-                                                <a href="{{route('products.destroy',$product->p_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
+                                                <a href="{{route('orders.destroy',$order->o_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
                                             @endcan
                                         </td>
                                     </tr>

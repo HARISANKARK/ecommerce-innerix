@@ -87,11 +87,12 @@
                                             <h2 class="lead"><b>{{$product->p_name}}</b></h2>
                                             <p class="text-muted text-sm">{{$product->p_description}}</p>
                                             <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                <li class="small"><h2 class="lead"><i class="fas fa-indian-rupee-sign"></i>{{$product->p_rate}}</h2></li>
+                                                <li class="small"><h6><span style="color: green"><i class="fas fa-arrow-down"></i>{{$product->p_discount_per}}<i class="fas fa-percentage"></i></span></h6></li>
+                                                <li class="small"><h5><s>{{$product->p_previous_price}}</s><i class="fas fa-indian-rupee-sign"></i>{{$product->p_price}}</h5></li>
                                             </ul>
                                         </div>
                                         <div class="col-5 text-center">
-                                            <img src="{{ asset($product->p_image_path) }}" alt="user-avatar" class="img-circle img-fluid">
+                                            <img src="{{ asset($product->p_image_path) }}" alt="user-avatar" class="img-fluid">
                                         </div>
                                         </div>
                                     </div>
@@ -100,7 +101,7 @@
                                         <a href="#" class="btn btn-sm bg-teal">
                                             <i class="fas fa-cart-plus"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-primary">
+                                        <a href="{{route('orders.create',$product->p_id)}}" class="btn btn-sm btn-primary">
                                             Buy Now
                                         </a>
                                         </div>

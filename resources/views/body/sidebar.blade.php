@@ -89,7 +89,7 @@
                     <ul class="nav nav-treeview">
                         @can('create')
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ Request::is('products/create') ? 'active' : '' }}">
+                            <a href="{{route('products.create')}}" class="nav-link {{ Request::is('products/create') ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>
                                 Add
@@ -99,7 +99,40 @@
                         @endcan
                         @can('view')
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ Request::is('products') ? 'active' : '' }}">
+                            <a href="{{route('products.index')}}" class="nav-link {{ Request::is('products') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                View
+                            </p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcan
+                @can('orders')
+                <li class="nav-item {{ Request::is('orders*') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                      <p>
+                        Orders
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {{-- @can('create')
+                        <li class="nav-item">
+                            <a href="{{route('orders.create')}}" class="nav-link {{ Request::is('orders/create') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>
+                                Add
+                            </p>
+                            </a>
+                        </li>
+                        @endcan --}}
+                        @can('view')
+                        <li class="nav-item">
+                            <a href="{{route('orders.index')}}" class="nav-link {{ Request::is('orders') ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>
                                 View

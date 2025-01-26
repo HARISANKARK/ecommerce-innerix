@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filters = $request->only(['category_id']);
+        $products = Product::join('categories','products.p_category_id','=','categories.c_id')
+                ->filter($filters)
+                ->get();
+        $categories = $this->commonService->categories();
+        return view('product.index',compact('products','categories'));
     }
 
     /**
@@ -19,7 +26,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->commonService->categories();
+        return view('product.create',compact('categories'));
     }
 
     /**
@@ -27,7 +35,63 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' =>'required',
+            'qty' =>'required|numeric',
+            'previous_price' =>'required',
+            'price' => 'required',
+            'discount_per' => 'required',
+            'description' => 'required|string|max:1000',
+            'image' => 'required|max:2048',
+        ]);
+
+        try
+        {
+            $product = new Product;
+            $product->p_name = $request->name;
+            $product->p_category_id = $request->category_id;
+            $product->p_qty = $request->qty;
+            $product->p_previous_price = $request->previous_price;
+            $product->p_price = $request->price;
+            $product->p_discount_per = $request->discount_per;
+            $product->p_description = $request->description;
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+
+                // Validate file extension and check MIME type
+                $extension = $file->getClientOriginalExtension();
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+                if (!in_array(strtolower($extension), $allowedExtensions)) {
+                    return back()->with('error', 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.');
+                }
+
+                // Generate a unique filename with the current timestamp
+                $filename = time() . '.' . $extension;
+
+                // Save the file to the specified directory
+                $destinationPath = public_path('images/products');
+                $file->move($destinationPath, $filename);
+
+                // Assign the full file path to a variable
+                $filte_path = 'images/products/' . $filename; // Relative path for storage
+            }
+
+            $product->p_image_path = $filte_path;
+            $product->p_user_id = authUserId();
+            $product->save();
+
+            return redirect()->back()->with('success','Product Added Successfully');
+        }
+        catch (\Exception $e)
+        {
+            // Handle the exception
+            Log::error('An error occurred In ProductController: ' . $e->getMessage());
+            // Validation failed
+            return redirect()->back()->withInput()->with('danger','Something Went Wrong');
+        }
     }
 
     /**
@@ -43,7 +107,13 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Store the previous URL before visiting the edit page
+        session(['second_last_page' => url()->previous()]);
+
+        $product = Product::join('categories','products.p_category_id','=','categories.c_id')
+                ->find($id);
+        $categories = $this->commonService->categories();
+        return view('product.edit',compact('product','categories'));
     }
 
     /**
@@ -51,7 +121,63 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' =>'required',
+            'qty' =>'required|numeric',
+            'previous_price' =>'required',
+            'price' => 'required',
+            'discount_per' => 'required',
+            'description' => 'required|string|max:1000',
+            'image' => 'max:2048',
+        ]);
+
+        try
+        {
+            $product = Product::find($id);
+            $product->p_name = $request->name;
+            $product->p_category_id = $request->category_id;
+            $product->p_qty = $request->qty;
+            $product->p_previous_price = $request->previous_price;
+            $product->p_price = $request->price;
+            $product->p_discount_per = $request->discount_per;
+            $product->p_description = $request->description;
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+
+                // Validate file extension and check MIME type
+                $extension = $file->getClientOriginalExtension();
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+                if (!in_array(strtolower($extension), $allowedExtensions)) {
+                    return back()->with('error', 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.');
+                }
+
+                // Generate a unique filename with the current timestamp
+                $filename = time() . '.' . $extension;
+
+                // Save the file to the specified directory
+                $destinationPath = public_path('images/products');
+                $file->move($destinationPath, $filename);
+
+                // Assign the full file path to a variable
+                $filte_path = 'images/products/' . $filename; // Relative path for storage
+
+                $product->p_image_path = $filte_path;
+            }
+
+            $product->save();
+
+            return redirect(session('second_last_page'))->with('success','Product Updated Successfully');
+        }
+        catch (\Exception $e)
+        {
+            // Handle the exception
+            Log::error('An error occurred In ProductController: ' . $e->getMessage());
+            // Validation failed
+            return redirect()->back()->withInput()->with('danger','Something Went Wrong');
+        }
     }
 
     /**
@@ -59,6 +185,10 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Store the previous URL before visiting the edit page
+        session(['second_last_page' => url()->previous()]);
+
+        $product = Product::find($id)->delete();
+        return redirect(session('second_last_page'))->with('success','Product Deleted Successfully');
     }
 }

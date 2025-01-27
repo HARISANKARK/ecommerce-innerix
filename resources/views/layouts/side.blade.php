@@ -83,7 +83,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
-                    @role('super-admin')
+                    {{-- @role('super-admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('users.index')}}">User</a>
                     </li>
@@ -93,7 +93,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('permissions.index')}}">Permissions</a>
                     </li>
-                    @endrole
+                    @endrole --}}
                 </ul>
 
                 <!-- Right navbar links -->

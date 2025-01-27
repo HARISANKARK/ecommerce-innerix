@@ -26,7 +26,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 // BASIC ROUTES
 Route::get('/home', [HomeController::class, 'index'])->name('home');

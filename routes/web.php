@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -59,4 +60,10 @@ Route::group(['middleware'=>['permission:orders']],function(){
     Route::get('/orders/destroy/{id}', [OrderController::class,'destroy'])->name('orders.destroy');
     Route::get('/orders/create/{id}', [OrderController::class,'create'])->name('orders.create');
     Route::resource('orders',OrderController::class)->except(['destroy','create']);
+});
+
+Route::group(['middleware'=>['permission:carts']],function(){
+    Route::get('/carts/destroy/{id}', [CartController::class,'destroy'])->name('carts.destroy');
+    Route::get('/carts/store/{id}', [CartController::class,'store'])->name('carts.store');
+    Route::resource('carts',CartController::class)->except(['destroy','store']);
 });

@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Products</h1>
+                        <h1>Carts</h1>
                     </div>
                 </div>
             </div>
@@ -41,15 +41,10 @@
                             <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Name</th>
                                 <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Previous Price</th>
+                                <th>Product</th>
                                 <th>Price</th>
-                                <th>Discount %</th>
                                 <th>Image</th>
-                                <th>Description</th>
-                                <th>#</th>
                                 <th>#</th>
                             </tr>
                             </thead>
@@ -57,39 +52,30 @@
                                 @php
                                     $i=1;
                                 @endphp
-                                @foreach ($products as $product)
+                                @foreach ($carts as $cart)
                                     <tr>
                                         <td>{{$i++}}</td>
-                                        <td>{{$product->p_name}}</td>
-                                        <td>{{$product->c_name}}</td>
-                                        <td>{{$product->p_qty}}</td>
-                                        <td>{{$product->p_previous_price}}</td>
-                                        <td>{{$product->p_price}}</td>
-                                        <td>{{$product->p_discount_per}}</td>
+                                        <td>{{$cart->c_name}}</td>
+                                        <td>{{$cart->p_name}}</td>
+                                        <td>{{$cart->p_price}}</td>
                                         <td>
-                                            <img src="{{ asset($product->p_image_path) }}" alt="user-avatar" class="img-circle img-fluid" width="50px" height="30px">
-                                        </td>
-                                        <td>{{$product->p_description}}</td>
-                                        <td>
-                                            @can('carts')
-                                                <a href="{{route('carts.store',$product->p_id)}}" class="btn btn-sm bg-teal">
-                                                    <i class="fas fa-cart-plus"></i>
-                                                </a>
-                                            @endcan
-                                            <a href="{{route('orders.create',$product->p_id)}}" class="btn btn-sm btn-primary">
-                                                BuyNow
-                                            </a>
+                                            <img src="{{ asset($cart->p_image_path) }}" alt="user-avatar" class="img-circle img-fluid" width="50px" height="30px">
                                         </td>
                                         <td>
-                                            @can('edit')
-                                                <a href="{{route('products.edit',$product->p_id)}}" class="btn"><i class="fa fa-pencil"></i></a>
-                                            @endcan
                                             @can('delete')
-                                                <a href="{{route('products.destroy',$product->p_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
+                                                <a href="{{route('carts.destroy',$cart->c_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
                                             @endcan
                                         </td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <td>{{$i++}}</td>
+                                    <td><b>Total</b></td>
+                                    <td></td>
+                                    <td><b>{{$carts->sum('p_price')}}</b></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

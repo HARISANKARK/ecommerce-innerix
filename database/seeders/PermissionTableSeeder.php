@@ -42,6 +42,10 @@ class PermissionTableSeeder extends Seeder
                 'name' => 'orders',
                 'guard_name' => 'web'
             ],
+            [
+                'name' => 'carts',
+                'guard_name' => 'web'
+            ],
         ];
 
         foreach ($permissions as $permission) {

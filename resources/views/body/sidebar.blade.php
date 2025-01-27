@@ -143,6 +143,16 @@
                     </ul>
                 </li>
                 @endcan
+                @can('orders')
+                <li class="nav-item">
+                    <a href="{{route('carts.index')}}" class="nav-link {{ Request::is('carts') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-shopping-cart"></i>
+                      <p>
+                        Carts
+                      </p>
+                    </a>
+                </li>
+                @endcan
                 @endcanany
 
                <!-- <li class="nav-item">

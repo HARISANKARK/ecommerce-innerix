@@ -98,9 +98,11 @@
                                     </div>
                                     <div class="card-footer">
                                         <div class="text-right">
-                                        <a href="#" class="btn btn-sm bg-teal">
-                                            <i class="fas fa-cart-plus"></i>
-                                        </a>
+                                        @can('carts')
+                                            <a href="{{route('carts.store',$product->p_id)}}" class="btn btn-sm bg-teal">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </a>
+                                        @endcan
                                         <a href="{{route('orders.create',$product->p_id)}}" class="btn btn-sm btn-primary">
                                             Buy Now
                                         </a>

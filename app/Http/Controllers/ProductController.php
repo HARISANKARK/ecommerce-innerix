@@ -11,6 +11,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function GetProducts(Request $request)
+    {
+        $products = Product::where('p_category_id',$request->category_id)->get();
+        return $products;
+    }
+
     public function index(Request $request)
     {
         $filters = $request->only(['category_id']);

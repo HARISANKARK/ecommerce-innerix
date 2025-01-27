@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="exampleInputEmail1">Category</label>
-                                        <select  class="form-control select2bs4" name="category_id">
+                                        <select  class="form-control select2bs4" name="category_id" id="category_id" onchange="getProducts()">
                                             <option value="" hidden></option>
                                             @foreach($categories as $category)
                                                 <option value="{{$category->c_id}}">{{$category->c_name}}</option>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="exampleInputEmail1">Product</label>
-                                        <select  class="form-control select2bs4" name="product_id">
+                                        <select  class="form-control select2bs4" name="product_id" id="product_id">
                                             <option value="" hidden></option>
                                             @foreach($products as $product)
                                                 <option value="{{$product->p_id}}">{{$product->p_name}}</option>
@@ -113,5 +113,5 @@
             <!-- /.col -->
         </div>
     </div>
-
+<script src="{{asset('js/custom/display_products.js')}}"></script>
 @endsection

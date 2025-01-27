@@ -44,6 +44,9 @@ Route::get('/users/destroy/{id}', [UserController::class,'destroy'])->name('user
 
 // END BASIC ROUTES
 
+// Ajax URL
+Route::post('/products/get_products', [ProductController::class,'GetProducts']);
+
 
 Route::group(['middleware'=>['permission:categories']],function(){
     Route::get('/categories/destroy/{id}', [CategoryController::class,'destroy'])->name('categories.destroy');

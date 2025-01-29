@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +70,7 @@ class ApiController extends Controller
             ->get();
 
         // Check if cart exists
-        if(empty($carts)){
+        if(!$carts){
             return response()->json([
                 'message' => "Carts Not Found"
             ],404);
@@ -82,4 +83,24 @@ class ApiController extends Controller
         ],200);
     }
 
+    public function Orders()
+    {
+        $orders = Order::join('categories','orders.category_id','=','categories.c_id')
+            ->join('products','orders.product_id','=','products.p_id')
+            ->orderBy('o_id','desc')
+            ->get();
+
+        // Check if cart exists
+        if(!$orders){
+            return response()->json([
+                'message' => "Orders Not Found"
+            ],404);
+        }
+
+        // Return cart details
+        return response()->json([
+            'message' => "Orders Retrived Successfully",
+            'data' => $orders
+        ],200);
+    }
 }

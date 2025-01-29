@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -50,7 +51,7 @@ class ProductController extends Controller
             'price' => 'required',
             'discount_per' => 'required',
             'description' => 'required|string|max:1000',
-            'image' => 'required|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         try
@@ -64,27 +65,11 @@ class ProductController extends Controller
             $product->p_discount_per = $request->discount_per;
             $product->p_description = $request->description;
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-
-                // Validate file extension and check MIME type
-                $extension = $file->getClientOriginalExtension();
-                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-                if (!in_array(strtolower($extension), $allowedExtensions)) {
-                    return back()->with('error', 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.');
-                }
-
-                // Generate a unique filename with the current timestamp
-                $filename = time() . '.' . $extension;
-
-                // Save the file to the specified directory
-                $destinationPath = public_path('images/products');
-                $file->move($destinationPath, $filename);
-
-                // Assign the full file path to a variable
-                $filte_path = 'images/products/' . $filename; // Relative path for storage
-            }
+            // Store image in the 'public/images/product' directory
+            $imageName = time() . '.' . $request->image->extension();
+            $path = 'images/products/';
+            $request->image->move(public_path($path), $imageName);
+            $filte_path = $path.$imageName;
 
             $product->p_image_path = $filte_path;
             $product->p_user_id = authUserId();
@@ -136,7 +121,6 @@ class ProductController extends Controller
             'price' => 'required',
             'discount_per' => 'required',
             'description' => 'required|string|max:1000',
-            'image' => 'max:2048',
         ]);
 
         try
@@ -150,27 +134,23 @@ class ProductController extends Controller
             $product->p_discount_per = $request->discount_per;
             $product->p_description = $request->description;
 
+            // Validate and upload new image if present
             if ($request->hasFile('image')) {
-                $file = $request->file('image');
+                $request->validate([
+                    'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
 
-                // Validate file extension and check MIME type
-                $extension = $file->getClientOriginalExtension();
-                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-                if (!in_array(strtolower($extension), $allowedExtensions)) {
-                    return back()->with('error', 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.');
+                // Delete the image from the server
+                $imagePath = public_path($product->p_image_path);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
                 }
 
-                // Generate a unique filename with the current timestamp
-                $filename = time() . '.' . $extension;
-
-                // Save the file to the specified directory
-                $destinationPath = public_path('images/products');
-                $file->move($destinationPath, $filename);
-
-                // Assign the full file path to a variable
-                $filte_path = 'images/products/' . $filename; // Relative path for storage
-
+                // Store new image
+                $imageName = time() . '.' . $request->image->extension();
+                $path = 'images/products/';
+                $request->image->move(public_path($path), $imageName);
+                $filte_path = $path.$imageName;
                 $product->p_image_path = $filte_path;
             }
 

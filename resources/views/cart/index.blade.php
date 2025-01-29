@@ -63,7 +63,7 @@
                                         </td>
                                         <td>
                                             @can('delete')
-                                                <a href="{{route('carts.destroy',$cart->c_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
+                                                <a href="{{route('carts.destroy',$cart->ct_id)}}" class="btn" onclick="return confirm('Do you want to delete This Entry ?')"><i class="fa fa-trash"></i></a>
                                             @endcan
                                         </td>
                                     </tr>

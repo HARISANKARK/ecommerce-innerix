@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     use HasFactory;
-    protected $primeryKey = 'c_id';
+    protected $primeryKey = 'ct_id';
 
     public function scopeFilter(Builder $query,array $filters) : Builder
     {

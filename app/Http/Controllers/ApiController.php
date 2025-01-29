@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -30,7 +31,8 @@ class ApiController extends Controller
 
     public function Products(Request $request)
     {
-        $products = Product::orderBy('p_name','asc');
+        $products = Product::join('categories','products.p_category_id','=','categories.c_id')
+            ->orderBy('p_name','asc');
         if($request->category_id){
             $products = $products->where('p_category_id',$request->category_id);
         }
@@ -56,6 +58,27 @@ class ApiController extends Controller
         return response()->json([
             'message' => "Products Retrived Successfully",
             'data' => $products
+        ],200);
+    }
+
+    public function Carts()
+    {
+        $carts = Cart::join('categories','carts.category_id','=','categories.c_id')
+            ->join('products','carts.product_id','=','products.p_id')
+            ->orderBy('ct_id','desc')
+            ->get();
+
+        // Check if cart exists
+        if(empty($carts)){
+            return response()->json([
+                'message' => "Carts Not Found"
+            ],404);
+        }
+
+        // Return cart details
+        return response()->json([
+            'message' => "Carts Retrived Successfully",
+            'data' => $carts
         ],200);
     }
 }

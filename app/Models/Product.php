@@ -24,21 +24,6 @@ class Product extends Model
             function ($query, $value) {
                 return $query->where('products.p_category_id','=', $value);
             }
-        )->when(
-            $filters['name'] ?? false,
-            function ($query, $value) {
-                return $query->where('products.p_name','=', $value);
-            }
-        )->when(
-            $filters['lower_price'] ?? false,
-            function ($query, $value) {
-                return $query->where('products.p_price','>=', $value);
-            }
-        )->when(
-            $filters['higher_price'] ?? false,
-            function ($query, $value) {
-                return $query->where('products.p_price','<=', $value);
-            }
         );
     }
 

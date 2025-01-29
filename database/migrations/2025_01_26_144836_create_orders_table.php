@@ -24,6 +24,7 @@ return new class extends Migration
             $table->bigInteger('qty');
             $table->double('price');
             $table->double('amount');
+            $table->integer('o_status')->default(1)->comment('1 - Requested');
             $table->bigInteger('o_user_id');
             $table->softDeletes();
             $table->timestamps();

@@ -35,6 +35,9 @@ class OrderController extends Controller
      */
     public function create($id)
     {
+        // Store the previous URL before visiting the edit page
+        session(['second_last_page' => url()->previous()]);
+
         $product = Product::join('categories','products.p_category_id','=','categories.c_id')->find($id);
         return view('order.create',compact('product'));
     }
@@ -57,8 +60,8 @@ class OrderController extends Controller
             'lan_mark' => 'required|string|max:255',
         ]);
 
-        // try
-        // {
+        try
+        {
             $order_id = Number::first()->order_id ?? 1;
 
             $order = new Order;
@@ -73,6 +76,7 @@ class OrderController extends Controller
             $order->qty = $request->qty;
             $order->price = $request->price;
             $order->amount = $request->amount;
+            $order->o_status = 1;//order requested
             $order->o_user_id = authUserId();
             $order->save();
 
@@ -81,15 +85,15 @@ class OrderController extends Controller
             $number->order_id = ++$order_id;
             $number->save();
 
-            return redirect()->back()->with('success','Order Added Successfully');
-        // }
-        // catch (\Exception $e)
-        // {
-        //     // Handle the exception
-        //     Log::error('An error occurred In OrderController: ' . $e->getMessage());
-        //     // Validation failed
-        //     return redirect()->back()->withInput()->with('danger','Something Went Wrong');
-        // }
+            return redirect(session('second_last_page'))->with('success','Order Added Successfully');
+        }
+        catch (\Exception $e)
+        {
+            // Handle the exception
+            Log::error('An error occurred In OrderController: ' . $e->getMessage());
+            // Validation failed
+            return redirect()->back()->withInput()->with('danger','Something Went Wrong');
+        }
 
     }
 

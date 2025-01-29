@@ -61,6 +61,7 @@
                                 <th>Sl No</th>
                                 <th>Date</th>
                                 <th>Order Id</th>
+                                <th>Status</th>
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Image</th>
@@ -83,6 +84,11 @@
                                         <td>{{$i++}}</td>
                                         <td>{{formatDate($order->date)}}</td>
                                         <td>{{$order->order_id}}</td>
+                                        @if($order->o_status == 1)
+                                            <td style="color: indigo">Order Requested</td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                         <td>{{$order->p_name}}</td>
                                         <td>{{$order->c_name}}</td>
                                         <td>

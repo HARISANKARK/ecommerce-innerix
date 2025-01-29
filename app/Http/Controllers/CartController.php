@@ -96,6 +96,11 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Store the previous URL before visiting the edit page
+        session(['second_last_page' => url()->previous()]);
+
+        $cart = Cart::find($id)->delete();
+
+        return redirect(session('second_last_page'))->with('success','Cart Product Deleted Successfully');
     }
 }

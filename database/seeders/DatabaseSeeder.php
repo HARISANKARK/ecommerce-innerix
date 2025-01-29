@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PersonalAccessTokenTableSeeder::class,
             CategoriesTableSeeder::class,
             ProductsTableSeeder::class,
+            NumberTableSeeder::class
         ]);
     }
 }

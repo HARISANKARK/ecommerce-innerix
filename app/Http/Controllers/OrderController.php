@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Number;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -56,10 +57,13 @@ class OrderController extends Controller
             'lan_mark' => 'required|string|max:255',
         ]);
 
-        try
-        {
+        // try
+        // {
+            $order_id = Number::first()->order_id ?? 1;
+
             $order = new Order;
             $order->date = $request->date;
+            $order->order_id = $order_id;
             $order->category_id = $request->category_id;
             $order->product_id = $request->product_id;
             $order->name = $request->name;
@@ -72,15 +76,20 @@ class OrderController extends Controller
             $order->o_user_id = authUserId();
             $order->save();
 
+            // Update Order Id
+            $number = Number::find(1);
+            $number->order_id = ++$order_id;
+            $number->save();
+
             return redirect()->back()->with('success','Order Added Successfully');
-        }
-        catch (\Exception $e)
-        {
-            // Handle the exception
-            Log::error('An error occurred In OrderController: ' . $e->getMessage());
-            // Validation failed
-            return redirect()->back()->withInput()->with('danger','Something Went Wrong');
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     // Handle the exception
+        //     Log::error('An error occurred In OrderController: ' . $e->getMessage());
+        //     // Validation failed
+        //     return redirect()->back()->withInput()->with('danger','Something Went Wrong');
+        // }
 
     }
 
@@ -129,6 +138,7 @@ class OrderController extends Controller
 
         try
         {
+
             $order = Order::find($id);
             $order->date = $request->date;
             $order->name = $request->name;

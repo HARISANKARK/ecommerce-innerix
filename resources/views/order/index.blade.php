@@ -60,6 +60,7 @@
                             <tr>
                                 <th>Sl No</th>
                                 <th>Date</th>
+                                <th>Order Id</th>
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Image</th>
@@ -81,6 +82,7 @@
                                     <tr>
                                         <td>{{$i++}}</td>
                                         <td>{{formatDate($order->date)}}</td>
+                                        <td>{{$order->order_id}}</td>
                                         <td>{{$order->p_name}}</td>
                                         <td>{{$order->c_name}}</td>
                                         <td>

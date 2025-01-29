@@ -6,12 +6,39 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {
+    public function login(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Retrieve user by email
+        $user = User::where('email', $request->email)->first();
+
+        // Check if the user exists and the password matches
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Return the user in JSON format
+            return response()->json([
+                'message' => "User found Successfully",
+                'data' => $user
+            ],200);
+        } else {
+            // Return an error response
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+    }
+
     public function Categories()
     {
         $categories = Category::all();

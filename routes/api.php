@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/login', [ApiController::class, 'login']);
     Route::post('/categories', [ApiController::class, 'Categories']);
     Route::post('/products', [ApiController::class, 'Products']);
     Route::post('/carts', [ApiController::class, 'Carts']);

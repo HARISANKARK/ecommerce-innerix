@@ -71,7 +71,7 @@
                       </div>
                       <div class="form-group col-md-3">
                         <label for="exampleInputEmail1">Quantity</label>
-                        <input type="number" class="form-control" name="qty" id="qty" value="1"  placeholder="Enter Product Quantity" oninput="calcAmt()" required>
+                        <input type="number" class="form-control" name="qty" id="qty" value="1"  max="{{$balance_qty}}" oninvalid="this.setCustomValidity('Stock Quantity Exceeded {{$balance_qty}}')" oninput="this.setCustomValidity('')"  placeholder="Enter Product Quantity" oninput="calcAmt()" required>
                         @error('qty')
                             <span style="color: red;">{{ $message }}</span><br>
                         @enderror

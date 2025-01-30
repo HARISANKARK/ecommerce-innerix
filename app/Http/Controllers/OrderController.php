@@ -5,14 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Number;
 use App\Models\Order;
 use App\Models\Product;
+use Hamcrest\Type\IsNumeric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+
+use function PHPUnit\Framework\assertIsNotNumeric;
+use function PHPUnit\Framework\assertIsNumeric;
+use function PHPUnit\Framework\isNull;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function CalcProductStock($product_id = null)
+    {
+        $products = $this->commonService->products();
+        foreach($products as $product)
+        {
+            $order_qty = Order::where('product_id',$product->p_id)->sum('qty') ?? 0;
+            $balance_qty = $product->p_qty - $order_qty;
+            $return_array[] = [
+                'product_id' => $product->p_id,
+                'product_name' => $product->p_name,
+                'product_qty' => $product->p_qty,
+                'order_qty' => $order_qty,
+                'balance_qty' => $balance_qty
+            ];
+        }
+
+        return $return_array;
+    }
     public function index(Request $request)
     {
         $filters = $request->only(['from','to','product_id','category_id']);
@@ -39,7 +62,11 @@ class OrderController extends Controller
         session(['second_last_page' => url()->previous()]);
 
         $product = Product::join('categories','products.p_category_id','=','categories.c_id')->find($id);
-        return view('order.create',compact('product'));
+
+        $order_qty = Order::where('product_id',$id)->sum('qty') ?? 0;
+        $balance_qty = $product->p_qty - $order_qty;
+
+        return view('order.create',compact('product','balance_qty'));
     }
 
     /**

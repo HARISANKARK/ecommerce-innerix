@@ -76,8 +76,11 @@
                                                     <i class="fas fa-cart-plus"></i>
                                                 </a>
                                             @endcan
-                                            <a href="{{route('orders.create',$product->p_id)}}" class="btn btn-sm btn-primary">
+                                            <a href="{{route('orders.create',$product->p_id)}}" id="{{$product->p_id}}" class="btn btn-sm btn-primary">
                                                 BuyNow
+                                            </a>
+                                            <a href="#" class="btn" id="{{$product->p_id}}out" style="display: none;color:red">
+                                                Out Of Stock
                                             </a>
                                         </td>
                                         <td>
@@ -100,5 +103,15 @@
             <!-- /.col -->
         </div>
     </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- Custom Js --}}
+<script src="{{asset('js/custom/display_product_stock.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        console.log('ready');
+        calcProductStock();
+    });
+</script>
 
 @endsection

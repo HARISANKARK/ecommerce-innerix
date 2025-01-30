@@ -46,6 +46,7 @@ Route::get('/users/destroy/{id}', [UserController::class,'destroy'])->name('user
 
 // Ajax URL
 Route::post('/products/get_products', [ProductController::class,'GetProducts']);
+Route::get('/orders/calc_product_stock/{id?}', [OrderController::class,'CalcProductStock']);
 
 
 Route::group(['middleware'=>['permission:categories']],function(){

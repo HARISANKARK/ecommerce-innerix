@@ -109,7 +109,6 @@
 <script src="{{asset('js/custom/display_product_stock.js')}}"></script>
 <script>
     $(document).ready(function() {
-        console.log('ready');
         calcProductStock();
     });
 </script>

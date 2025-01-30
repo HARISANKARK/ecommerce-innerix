@@ -144,10 +144,13 @@ class OrderController extends Controller
                 ->join('categories','orders.category_id','=','categories.c_id')
                 ->find($id);
 
+        $order_qty = Order::where('product_id',$order->p_id)->sum('qty') ?? 0;
+        $balance_qty = $order->p_qty - $order_qty;
+
         $products = $this->commonService->products();
         $categories = $this->commonService->categories();
 
-        return view('order.edit',compact('products','categories','order'));
+        return view('order.edit',compact('products','categories','order','balance_qty'));
     }
 
     /**

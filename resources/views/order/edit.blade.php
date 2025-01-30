@@ -55,7 +55,7 @@
                       </div>
                       <div class="form-group col-md-3">
                         <label for="exampleInputEmail1">Contact No</label>
-                        <input type="number" class="form-control" name="contact_no" value="{{$order->contact_no}}" placeholder="Enter Contact No" pattern="^\d{10}$" title="Contact number must be exactly 10 digits" required>
+                        <input type="tel" class="form-control" name="contact_no" value="{{$order->contact_no}}"  placeholder="Enter 10-digit number" pattern="[0-9]{10}" required>
                         @error('contact_no')
                             <span style="color: red;">{{ $message }}</span><br>
                         @enderror
@@ -69,7 +69,7 @@
                       </div>
                       <div class="form-group col-md-3">
                         <label for="exampleInputEmail1">Quantity</label>
-                        <input type="number" class="form-control" name="qty" id="qty" value="{{$order->qty}}"  placeholder="Enter Product Quantity" oninput="calcAmt()" required>
+                        <input type="number" class="form-control" name="qty" id="qty" value="{{$order->qty}}"  max="{{$balance_qty}}" oninvalid="this.setCustomValidity('Stock Quantity Exceeded {{$balance_qty}}')" oninput="this.setCustomValidity(''),calcAmt()"  placeholder="Enter Product Quantity" required>
                         @error('qty')
                             <span style="color: red;">{{ $message }}</span><br>
                         @enderror
